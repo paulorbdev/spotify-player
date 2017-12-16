@@ -53,5 +53,8 @@
     "rimraf": "^2.6.1",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.9.7"
+  },
+  "dependencies": {
+    "spotify-wrapper": "^2.0.2"
   }
 }
