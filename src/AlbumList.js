@@ -1,3 +1,4 @@
+/* eslint no-param-reassign: ["error", { "props": false }] */
 export default function renderAlbums(data, element) {
   const markup = data.map(album => `
   <div class="list-item">
