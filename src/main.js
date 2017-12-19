@@ -1,3 +1,5 @@
+/* global document */
+
 import spotify from './Spotify';
 import renderAlbums from './AlbumList';
 
