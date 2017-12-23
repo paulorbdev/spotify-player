@@ -78,11 +78,34 @@ var _AlbumList = __webpack_require__(7);
 
 var _AlbumList2 = _interopRequireDefault(_AlbumList);
 
+var _AlbumInfo = __webpack_require__(8);
+
+var _AlbumInfo2 = _interopRequireDefault(_AlbumInfo);
+
+var _AlbumTracks = __webpack_require__(9);
+
+var _AlbumTracks2 = _interopRequireDefault(_AlbumTracks);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var albums = _Spotify2.default.search.albums('Drake');
+/* global document */
 
-console.log(albums);
+var albums = _Spotify2.default.search.albums('The weeknd');
+var albumList = document.getElementById('album-list');
+
+var album = _Spotify2.default.album.getAlbum('09fggMHib4YkOtwQNXEBII');
+var albumInfo = document.getElementById('album-info');
+
+var albumTracks = document.getElementById('album-tracks');
+
+album.then(function (data) {
+  return (0, _AlbumInfo2.default)(data, albumInfo);
+});
+albums.then(function (data) {
+  return (0, _AlbumList2.default)(data.albums.items, albumList);
+}).then(function (data) {
+  return (0, _AlbumTracks2.default)(data.tracks.items, albumTracks);
+});
 
 /***/ }),
 /* 1 */
@@ -102,7 +125,7 @@ var _spotifyWrapper2 = _interopRequireDefault(_spotifyWrapper);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var spotify = new _spotifyWrapper2.default({
-  token: 'BQBnB-cAN10q4t69GKxH3KU3BkufAsDQaHaf021FHdOTJCNlnAgWcfR9vg39ycJBSU_rqzLp8Z5oGxQI8huMjhjQ3BUedd56i-4vIrKvcn97r3v9iDeJlE53Ho705R5J83ufST-JY1jMqA'
+  token: 'BQDCMwD9l7tuvulPkbMZZOkmgN7I1rLTIf_CqNbMuZUfjYMduk_W61RAM7fU50oFr5fVwuqh18Uy2hUb2Q5XsDOuBVzn3f1ZwLgD6_9Zy2PHpsibZGyjyx1xnoV_2cq2L098rfDRcqUv4w'
 });
 
 exports.default = spotify;
@@ -265,6 +288,49 @@ function renderAlbums(data, element) {
   var markup = data.map(function (album) {
     return '\n  <div class="list-item">\n    <img src="' + album.images[2].url + '" alt="' + album.name + '" class="list-image">\n    <div class="list-description">\n      <p class="list-title">' + album.name + '</p>\n      <p class="list-subtitle">' + album.artists[0].name + '</p>\n    </div>\n  </div>';
   }).join('');
+  element.innerHTML = markup;
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = renderAlbumInfo;
+/* eslint no-param-reassign: ["error", { "props": false }] */
+
+function renderAlbumInfo(data, element) {
+  var markup = "\n    <img class=\"album-image\" src=\"" + data.images[0].url + "\" alt=\"" + data.name + "\">\n     <p class=\"album-title\">" + data.name + "</p>\n     <p class=\"album-artist\">" + data.artists[0].name + "</p>\n     <p class=\"album-counter\">" + data.tracks.total + " M\xFAsicas</p>\n     ";
+  element.innerHTML = markup;
+  return data;
+}
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = renderAlbumTracks;
+/* eslint no-param-reassign: ["error", { "props": false }] */
+
+function createMarkup(tracks) {
+  return tracks.map(function (track) {
+    return '\n  <div class="music" data-track-preview="">\n    <p class="music-number">' + track.track_number + '</p>\n    <p class="music-title">' + track.name + '</p>\n    <p class="music-duration">' + track.duration_ms + '</p>\n  </div>';
+  }).join('');
+}
+
+function renderAlbumTracks(data, element) {
+  var markup = createMarkup(data);
   element.innerHTML = markup;
 }
 
