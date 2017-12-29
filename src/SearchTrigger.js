@@ -11,10 +11,14 @@ const searchForm = document.getElementById('search-form');
 //
 // albums.then(data => renderAlbums(data.albums.items, albumList));
 
+function makeRequest() {
+  spotify.search.albums(searchInput.value)
+    .then(data => renderAlbums(data.albums.items, albumList));
+}
+
 export default function searchEnterTrigger() {
   searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    spotify.search.albums(searchInput.value)
-      .then(data => renderAlbums(data.albums.items, albumList));
+    makeRequest();
   });
 }
